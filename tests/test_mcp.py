@@ -44,6 +44,18 @@ def test_update_mastery_math(tmp_learner):
     assert r2["evidence_count"] == 2
 
 
+def test_missing_private_profile_starts_empty(tmp_learner):
+    mcp_server.LEARNER_PATH = tmp_learner
+    assert not tmp_learner.exists()
+    profile = mcp_server.get_learner_profile()
+    assert profile["user_id"] == "me"
+    result = mcp_server.update_mastery("transformer", "quiz", "首次答题", 0.6)
+    assert result["evidence_count"] == 1
+    saved = json.loads(tmp_learner.read_text(encoding="utf-8"))
+    assert saved["user_id"] == "me"
+    assert set(saved["states"]) == {"transformer"}
+
+
 def test_update_mastery_synthesizes_history_evidence(tmp_learner):
     # 历史状态只有总分没有证据明细：回写时应折算成等效证据，不能丢掉旧掌握度
     previous = (date.today() - timedelta(days=30)).isoformat()

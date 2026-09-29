@@ -15,7 +15,7 @@
 | 知识结构 | 人工维护的种子本体：88 个节点、117 条关系；前置关系形成有向无环图 |
 | 笔记入库 | Markdown / DOCX 按标题小节切分，LLM 抽取候选节点与关系，经消歧、模式校验、去重和成环检查后进入独立补丁层 |
 | 学习者模型 | 掌握度、证据与置信度分离；学习路径按前置顺序排，并标出已掌握、学习中和缺口 |
-| 检索 | 本地查询从向量候选出发扩展图邻居；全局查询按 Louvain 社区摘要检索；上下文可带掌握度与来源信息 |
+| 检索 | 本地查询从向量候选出发扩展图邻居；全局查询按 Louvain 社区摘要检索；生成用文本带掌握度，结构化结果保留来源定位 |
 | Agent 接口 | 基于 MCP Python SDK v2 的 stdio 服务提供画像、就绪检查、路径、推荐、图查询、领域概览、掌握证据回写和图检索 |
 | 可视化 | D3 力导向图、筛选、搜索、节点详情和学习路径播放；可构建纯静态公开页面 |
 
@@ -51,6 +51,21 @@ python graph_rag.py --compare
 ```
 
 示例三元组位于 `data/examples/triples_demo.json`。去掉 `--dry-run` 才会写入 `data/ontology_generated.yaml`；该补丁层属于本地数据，不提交到公开仓库。
+
+## 扩展私人知识库
+
+把自己的 `.md`、`.markdown`、`.txt` 或 `.docx` 笔记放进 `data/corpus/`。配置本地 `llm_config.yaml` 后，先抽取候选而不自动入库，再检查节点名称、关系方向与原文依据：
+
+```bash
+python extract.py data/corpus/my_notes.md --limit 3 --no-ingest
+# 检查并按需修改 data/inbox/my_notes_triples.json
+python ingest.py data/inbox/my_notes_triples.json --dry-run
+python ingest.py data/inbox/my_notes_triples.json
+python build_graph.py
+python serve.py
+```
+
+`--limit 3` 仅处理前三个分片，便于控制首次试跑的模型调用量；完成审核后可去掉。没有可用 LLM 时，也可参照 `data/examples/triples_demo.json` 手写 JSON 或 YAML，直接从 `ingest.py --dry-run` 开始。入库只更新本地补丁层，不修改人工维护的种子本体。MCP 服务在入库后需要重启才能读到新节点；网页数据需要重新运行 `build_graph.py`。当前检索索引只覆盖概念节点与社区摘要，原笔记分片尚不参与查询时的全文召回。公开 Pages 演示始终只读取种子本体与合成画像。
 
 ## 公开演示与隐私
 
@@ -101,6 +116,8 @@ python extract.py data/corpus/demo_notes.md --dry-run
 python graph_rag.py "RLHF 怎么训练" --answer
 ```
 
+`--answer` 当前用于本地检索后的生成；`--global` 输出社区检索结果，不调用生成模型。
+
 Windows PowerShell 可用 `Copy-Item llm_config.example.yaml llm_config.yaml`。密钥也可放在环境变量中；不要写入示例文件、截图或提交内容。
 
 MCP 客户端可把 `mcp_server.py` 作为 stdio 服务启动。例如把下方路径替换为本机仓库的绝对路径：
@@ -117,6 +134,7 @@ MCP 客户端可把 `mcp_server.py` 作为 stdio 服务启动。例如把下方�
 ```
 
 真实证据回写会修改本地画像。公开演示仅展示合成画像，不提供在线写入接口。
+MCP 服务在本地缺少 `data/learner_state.json` 时从空画像开始；首次回写会创建该私人文件，不会复制公开演示的合成掌握度。
 
 ## 开发验证
 

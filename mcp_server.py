@@ -70,7 +70,6 @@ def _load_kg() -> KnowledgeGraph:
 
 KG = _load_kg()
 LEARNER_PATH = ROOT / "data" / "learner_state.json"
-DEFAULT_LEARNER_PATH = LEARNER_PATH
 
 BAND_LABELS = {
     "untouched": "未接触",
@@ -94,11 +93,8 @@ mcp = MCPServer(
 
 
 def _learner() -> LearnerModel:
-    """每次调用重新加载：服务常驻时也能吃到外部（CLI/前端）对状态文件的修改。"""
-    path = LEARNER_PATH
-    if path == DEFAULT_LEARNER_PATH and not path.exists():
-        path = ROOT / "data" / "learner_state.example.json"
-    return LearnerModel.load(path)
+    """每次读取本地私人画像；缺失时从空画像开始，避免把演示数据当作用户状态。"""
+    return LearnerModel.load(LEARNER_PATH)
 
 
 def _name(nid: str) -> str:

@@ -76,10 +76,10 @@ def ensure_index(kg, learner, embedder, rebuild: bool) -> dict:
 def print_result(r) -> None:
     print(f"\n查询：{r.query}   模式：{r.mode}")
     if r.seeds:
-        print("种子（掌握度加权重排后）：")
+        print("种子（查询意图优先；掌握度用于后续扩展）：")
         for s in r.seeds:
             print(f"  {s['name']:<14} 相似度 {s['sim']:.3f}  掌握度 {s['mastery']:.2f}  "
-                  f"加权分 {s['score']:.3f}")
+                  f"参考加权分 {s['score']:.3f}")
     print("\n--- 检索上下文 ---")
     print(r.context_text or "（空）")
     if r.stats:
