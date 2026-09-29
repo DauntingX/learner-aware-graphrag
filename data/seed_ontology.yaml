@@ -1,0 +1,262 @@
+# AI 领域种子本体
+#
+# 这是知识图谱的起点。后续 P1 阶段会由 LLM 从这个种子出发自动扩展。
+# 字段说明见 src/kg/schema.py。
+#
+# type 取值: Concept | Technique | Model | Task | Tool | Paper | Skill
+# difficulty: 1(入门) ~ 5(硬核)
+
+nodes:
+  # ---------------- 数学基础 ----------------
+  - {id: linear_algebra, name: 线性代数, type: Concept, domain: 数学基础, difficulty: 2, desc: 向量、矩阵、特征值分解，深度学习中张量运算的数学基础, aliases: [线代]}
+  - {id: calculus, name: 微积分与导数, type: Concept, domain: 数学基础, difficulty: 2, desc: 梯度、偏导、链式法则，反向传播的数学前提}
+  - {id: probability, name: 概率论, type: Concept, domain: 数学基础, difficulty: 2, desc: 分布、期望、贝叶斯，理解损失函数与生成模型的基石}
+  - {id: information_theory, name: 信息论, type: Concept, domain: 数学基础, difficulty: 3, desc: 熵、交叉熵、KL 散度，交叉熵损失的来源}
+  - {id: optimization, name: 最优化理论, type: Concept, domain: 数学基础, difficulty: 3, desc: 凸优化、梯度、鞍点，训练算法的理论基础}
+
+  # ---------------- 机器学习基础 ----------------
+  - {id: supervised_learning, name: 监督学习, type: Concept, domain: 机器学习基础, difficulty: 2, desc: 用带标签数据学习输入到输出的映射}
+  - {id: unsupervised_learning, name: 无监督学习, type: Concept, domain: 机器学习基础, difficulty: 2, desc: 从无标签数据中发现结构}
+  - {id: loss_function, name: 损失函数, type: Concept, domain: 机器学习基础, difficulty: 2, desc: 衡量预测与真实值差异，交叉熵与 MSE 最常用, aliases: [目标函数, 代价函数]}
+  - {id: gradient_descent, name: 梯度下降, type: Technique, domain: 机器学习基础, difficulty: 2, desc: 沿负梯度方向迭代更新参数，含 SGD/Adam 等变体}
+  - {id: backpropagation, name: 反向传播, type: Technique, domain: 机器学习基础, difficulty: 3, desc: 用链式法则从输出层回传梯度，深度学习的发动机, aliases: [BP]}
+  - {id: overfitting, name: 过拟合, type: Concept, domain: 机器学习基础, difficulty: 3, desc: 模型记住训练集噪声，泛化能力下降, aliases: [欠拟合]}
+  - {id: regularization, name: 正则化, type: Technique, domain: 机器学习基础, difficulty: 3, desc: L1/L2、Dropout、早停等抑制过拟合的手段}
+  - {id: cross_validation, name: 交叉验证, type: Technique, domain: 机器学习基础, difficulty: 2, desc: 数据切分多轮训练评估，降低评估方差}
+  - {id: bias_variance, name: 偏差-方差权衡, type: Concept, domain: 机器学习基础, difficulty: 3, desc: 欠拟合与过拟合的理论框架}
+  - {id: logistic_regression, name: 逻辑回归, type: Model, domain: 机器学习基础, difficulty: 2, desc: 最基础的线性分类器，理解神经元的起点}
+  - {id: decision_tree, name: 决策树, type: Model, domain: 机器学习基础, difficulty: 2, desc: 基于特征分裂的树模型，集成学习的基础}
+  - {id: clustering, name: 聚类, type: Technique, domain: 机器学习基础, difficulty: 2, desc: K-Means、层次聚类等无监督分组方法}
+
+  # ---------------- 深度学习 ----------------
+  - {id: neural_network, name: 神经网络, type: Model, domain: 深度学习, difficulty: 3, desc: 多层非线性变换堆叠而成的函数逼近器}
+  - {id: activation_function, name: 激活函数, type: Concept, domain: 深度学习, difficulty: 2, desc: ReLU/GELU/Sigmoid，为网络引入非线性}
+  - {id: mlp, name: 多层感知机, type: Model, domain: 深度学习, difficulty: 3, desc: 全连接前馈网络，最基础的深度模型, aliases: [全连接网络, FFN]}
+  - {id: cnn, name: 卷积神经网络, type: Model, domain: 深度学习, difficulty: 4, desc: 用卷积核提取局部特征，计算机视觉主力, aliases: [卷积网络]}
+  - {id: rnn, name: 循环神经网络, type: Model, domain: 深度学习, difficulty: 3, desc: 带隐状态的序列模型，存在长程依赖问题}
+  - {id: lstm, name: LSTM, type: Model, domain: 深度学习, difficulty: 4, desc: 用门控机制缓解梯度消失的长短期记忆网络}
+  - {id: attention, name: 注意力机制, type: Concept, domain: 深度学习, difficulty: 4, desc: 按相关性动态加权聚合信息，Transformer 的核心}
+  - {id: self_attention, name: 自注意力, type: Technique, domain: 深度学习, difficulty: 4, desc: 序列内部元素互相注意，QKV 三矩阵运算}
+  - {id: transformer, name: Transformer, type: Model, domain: 深度学习, difficulty: 4, desc: 纯注意力架构，现代大模型的统一底座}
+  - {id: residual_connection, name: 残差连接, type: Technique, domain: 深度学习, difficulty: 3, desc: 跳连让梯度直通，使深层网络可训练, aliases: [跳跃连接]}
+  - {id: layer_norm, name: LayerNorm, type: Technique, domain: 深度学习, difficulty: 3, desc: 对单样本特征维归一化，Transformer 标配}
+  - {id: batch_norm, name: BatchNorm, type: Technique, domain: 深度学习, difficulty: 3, desc: 对 batch 维归一化，CNN 中常用}
+  - {id: dropout, name: Dropout, type: Technique, domain: 深度学习, difficulty: 2, desc: 训练时随机置零神经元，一种正则化}
+  - {id: embedding, name: 词嵌入, type: Concept, domain: 深度学习, difficulty: 3, desc: 把离散 token 映射为稠密向量, aliases: [向量化]}
+  - {id: word2vec, name: Word2Vec, type: Model, domain: 深度学习, difficulty: 3, desc: 用上下文预测词，静态词向量的经典方法}
+  - {id: positional_encoding, name: 位置编码, type: Technique, domain: 深度学习, difficulty: 3, desc: 为注意力注入顺序信息，含 RoPE 等方案}
+
+  # ---------------- NLP 与预训练 ----------------
+  - {id: tokenization, name: 分词, type: Technique, domain: NLP与预训练, difficulty: 2, desc: 把文本切分为模型可处理的 token}
+  - {id: bpe, name: BPE, type: Technique, domain: NLP与预训练, difficulty: 3, desc: 字节对编码，子词切分的工业标准, aliases: [字节对编码]}
+  - {id: pretraining, name: 预训练, type: Technique, domain: NLP与预训练, difficulty: 3, desc: 在海量语料上先学通用表征，再迁移到下游}
+  - {id: masked_lm, name: 掩码语言模型, type: Concept, domain: NLP与预训练, difficulty: 4, desc: 遮住部分 token 让模型还原，BERT 的训练目标}
+  - {id: next_token_prediction, name: 下一词预测, type: Concept, domain: NLP与预训练, difficulty: 3, desc: 自回归预测下一个 token，GPT 系的训练目标}
+  - {id: bert, name: BERT, type: Model, domain: NLP与预训练, difficulty: 4, desc: 双向编码器，理解类任务的代表}
+  - {id: gpt, name: GPT, type: Model, domain: NLP与预训练, difficulty: 4, desc: 自回归解码器，生成类任务的代表}
+  - {id: fine_tuning, name: 微调, type: Technique, domain: NLP与预训练, difficulty: 4, desc: 在预训练权重上继续训练以适配特定任务}
+  - {id: scaling_law, name: 缩放定律, type: Concept, domain: NLP与预训练, difficulty: 4, desc: 损失随参数量/数据量/算力的幂律下降规律}
+
+  # ---------------- 大模型工程 ----------------
+  - {id: llm, name: 大语言模型, type: Concept, domain: 大模型工程, difficulty: 3, desc: 超大规模参数的语言模型，具备通用任务能力, aliases: [大模型]}
+  - {id: context_window, name: 上下文窗口, type: Concept, domain: 大模型工程, difficulty: 3, desc: 模型单次可处理的最大 token 数}
+  - {id: kv_cache, name: KV Cache, type: Technique, domain: 大模型工程, difficulty: 4, desc: 缓存历史键值避免重复计算，推理加速的关键}
+  - {id: inference, name: 推理与部署, type: Skill, domain: 大模型工程, difficulty: 3, desc: 把训练好的模型高效跑起来对外服务}
+  - {id: quantization, name: 量化, type: Technique, domain: 大模型工程, difficulty: 4, desc: 用低比特表示权重/激活，降低显存与延迟}
+  - {id: distillation, name: 知识蒸馏, type: Technique, domain: 大模型工程, difficulty: 4, desc: 用大模型指导小模型训练}
+  - {id: speculative_decoding, name: 投机解码, type: Technique, domain: 大模型工程, difficulty: 5, desc: 小模型草稿 + 大模型校验，无损加速生成}
+  - {id: paged_attention, name: PagedAttention, type: Technique, domain: 大模型工程, difficulty: 5, desc: 像虚拟内存一样分页管理 KV Cache}
+  - {id: vllm, name: vLLM, type: Tool, domain: 大模型工程, difficulty: 4, desc: 高吞吐 LLM 推理引擎，工业界广泛使用}
+  - {id: lora, name: LoRA, type: Technique, domain: 大模型工程, difficulty: 4, desc: 冻结原权重、只训练低秩增量的高效微调}
+  - {id: qlora, name: QLoRA, type: Technique, domain: 大模型工程, difficulty: 4, desc: 4bit 量化基座 + LoRA，单卡可微调大模型}
+  - {id: peft, name: PEFT, type: Technique, domain: 大模型工程, difficulty: 3, desc: 参数高效微调的总称，含 LoRA/Prefix 等方法}
+  - {id: sft, name: 指令微调 SFT, type: Technique, domain: 大模型工程, difficulty: 4, desc: 用指令-回答数据对齐模型输出格式, aliases: [监督微调]}
+  - {id: rlhf, name: RLHF, type: Technique, domain: 大模型工程, difficulty: 5, desc: 人类反馈强化学习，让模型对齐人类偏好}
+  - {id: dpo, name: DPO, type: Technique, domain: 大模型工程, difficulty: 5, desc: 直接偏好优化，跳过奖励模型的 RLHF 简化方案}
+  - {id: reward_model, name: 奖励模型, type: Concept, domain: 大模型工程, difficulty: 5, desc: 学习人类偏好打分，RLHF 的核心组件}
+  - {id: mixed_precision, name: 混合精度训练, type: Technique, domain: 大模型工程, difficulty: 3, desc: 用 FP16/BF16 前向、FP32 累加，省显存提速}
+
+  # ---------------- 检索增强 RAG ----------------
+  - {id: rag, name: 检索增强生成 RAG, type: Technique, domain: 检索增强RAG, difficulty: 4, desc: 先检索外部知识再生成，缓解幻觉与知识过时, aliases: [检索增强]}
+  - {id: vector_database, name: 向量数据库, type: Tool, domain: 检索增强RAG, difficulty: 3, desc: 存储与近邻检索向量，如 Qdrant/Chroma/Milvus}
+  - {id: embedding_model, name: 嵌入模型, type: Model, domain: 检索增强RAG, difficulty: 3, desc: 把文本编码成语义向量的模型}
+  - {id: chunking, name: 文本分块, type: Technique, domain: 检索增强RAG, difficulty: 3, desc: 把长文档切成语义块，直接影响检索质量}
+  - {id: rerank, name: 重排序, type: Technique, domain: 检索增强RAG, difficulty: 4, desc: 对召回结果用交叉编码器精排，提升精度}
+  - {id: hybrid_search, name: 混合检索, type: Technique, domain: 检索增强RAG, difficulty: 4, desc: 向量检索 + 关键词检索融合排序}
+  - {id: graph_rag, name: GraphRAG, type: Technique, domain: 检索增强RAG, difficulty: 5, desc: 用知识图谱做检索增强，擅长多跳与全局性问题}
+
+  # ---------------- 智能体 Agent ----------------
+  - {id: agent, name: 智能体, type: Concept, domain: 智能体Agent, difficulty: 4, desc: 能自主规划、调用工具、完成多步任务的 LLM 应用形态}
+  - {id: tool_use, name: 工具调用, type: Technique, domain: 智能体Agent, difficulty: 4, desc: 让模型调用外部函数/API 扩展能力边界}
+  - {id: function_calling, name: 函数调用, type: Technique, domain: 智能体Agent, difficulty: 3, desc: 模型输出结构化调用参数的工程实现}
+  - {id: react, name: ReAct, type: Technique, domain: 智能体Agent, difficulty: 4, desc: 推理与行动交替循环的智能体范式}
+  - {id: planning, name: 任务规划, type: Technique, domain: 智能体Agent, difficulty: 4, desc: 把复杂目标拆解为可执行子任务}
+  - {id: memory, name: 记忆机制, type: Technique, domain: 智能体Agent, difficulty: 4, desc: 短期上下文与长期存储结合，让 Agent 有连续性}
+  - {id: mcp, name: MCP 协议, type: Technique, domain: 智能体Agent, difficulty: 4, desc: 模型上下文协议，标准化 Agent 与外部能力的对接, aliases: [Model Context Protocol]}
+  - {id: multi_agent, name: 多智能体, type: Technique, domain: 智能体Agent, difficulty: 5, desc: 多个 Agent 分工协作完成复杂任务}
+
+  # ---------------- 提示工程 ----------------
+  - {id: prompt_engineering, name: 提示工程, type: Skill, domain: 提示工程, difficulty: 2, desc: 设计输入以稳定引导模型输出}
+  - {id: cot, name: 思维链 CoT, type: Technique, domain: 提示工程, difficulty: 3, desc: 让模型分步推理，显著提升复杂任务表现, aliases: [Chain-of-Thought]}
+  - {id: few_shot, name: 少样本提示, type: Technique, domain: 提示工程, difficulty: 2, desc: 在提示中给几个示例引导模型, aliases: [Few-shot]}
+
+  # ---------------- 评估方法 ----------------
+  - {id: evaluation, name: 模型评估, type: Skill, domain: 评估方法, difficulty: 3, desc: 系统衡量模型能力与风险}
+  - {id: perplexity, name: 困惑度, type: Concept, domain: 评估方法, difficulty: 3, desc: 语言模型预测下一 token 的不确定度}
+  - {id: bleu, name: BLEU 指标, type: Concept, domain: 评估方法, difficulty: 3, desc: 基于 n-gram 重叠的生成质量指标}
+  - {id: rouge, name: ROUGE 指标, type: Concept, domain: 评估方法, difficulty: 3, desc: 面向摘要任务的召回导向指标}
+  - {id: benchmark, name: 基准测试, type: Technique, domain: 评估方法, difficulty: 3, desc: MMLU/GSM8K 等标准化能力评测集}
+  - {id: llm_as_judge, name: LLM 作为裁判, type: Technique, domain: 评估方法, difficulty: 4, desc: 用强模型给其他模型打分，替代人工评估}
+
+  # ---------------- 论文 ----------------
+  - {id: paper_attention, name: Attention Is All You Need, type: Paper, domain: 论文, difficulty: 4, desc: 提出 Transformer 的奠基论文（2017）}
+  - {id: paper_rag, name: Retrieval-Augmented Generation 论文, type: Paper, domain: 论文, difficulty: 4, desc: 提出 RAG 范式的论文（2020）}
+  - {id: paper_lora, name: LoRA 论文, type: Paper, domain: 论文, difficulty: 4, desc: 提出低秩适配微调方法的论文（2021）}
+  - {id: paper_react, name: ReAct 论文, type: Paper, domain: 论文, difficulty: 4, desc: 提出推理+行动智能体范式的论文（2022）}
+  - {id: paper_graphrag, name: GraphRAG 论文, type: Paper, domain: 论文, difficulty: 5, desc: 微软提出的图谱增强检索论文（2024）}
+
+
+# ==========================================================================
+# 关系
+# 核心是 prerequisite_of（构成 DAG，驱动学习路径规划）
+# 与 confusable_with（驱动对比式复习）
+# ==========================================================================
+relations:
+  # --- 数学基础 -> 机器学习 ---
+  - {source: linear_algebra, target: neural_network, type: prerequisite_of}
+  - {source: linear_algebra, target: embedding, type: prerequisite_of}
+  - {source: calculus, target: backpropagation, type: prerequisite_of}
+  - {source: probability, target: loss_function, type: prerequisite_of}
+  - {source: information_theory, target: loss_function, type: prerequisite_of, note: 交叉熵损失来自信息论}
+  - {source: optimization, target: gradient_descent, type: prerequisite_of}
+  - {source: linear_algebra, target: word2vec, type: prerequisite_of}
+
+  # --- 机器学习内部 ---
+  - {source: loss_function, target: gradient_descent, type: prerequisite_of}
+  - {source: gradient_descent, target: backpropagation, type: prerequisite_of}
+  - {source: supervised_learning, target: logistic_regression, type: prerequisite_of}
+  - {source: supervised_learning, target: loss_function, type: prerequisite_of}
+  - {source: unsupervised_learning, target: clustering, type: prerequisite_of}
+  - {source: logistic_regression, target: neural_network, type: prerequisite_of}
+  - {source: overfitting, target: regularization, type: prerequisite_of}
+  - {source: bias_variance, target: overfitting, type: prerequisite_of}
+  - {source: cross_validation, target: bias_variance, type: prerequisite_of, note: 交叉验证是估计泛化误差的手段}
+  - {source: decision_tree, target: bias_variance, type: related_to}
+
+  # --- 深度学习内部 ---
+  - {source: backpropagation, target: mlp, type: prerequisite_of}
+  - {source: activation_function, target: mlp, type: prerequisite_of}
+  - {source: mlp, target: cnn, type: prerequisite_of}
+  - {source: mlp, target: rnn, type: prerequisite_of}
+  - {source: rnn, target: lstm, type: prerequisite_of}
+  - {source: dropout, target: regularization, type: part_of}
+  - {source: mlp, target: neural_network, type: part_of}
+  - {source: backpropagation, target: neural_network, type: part_of}
+  - {source: attention, target: transformer, type: part_of}
+  - {source: self_attention, target: attention, type: part_of}
+  - {source: embedding, target: attention, type: prerequisite_of, note: 注意力在向量空间上运算}
+  - {source: tokenization, target: bpe, type: prerequisite_of}
+  - {source: tokenization, target: embedding, type: prerequisite_of}
+  - {source: word2vec, target: embedding, type: applied_in}
+  - {source: self_attention, target: transformer, type: prerequisite_of}
+  - {source: residual_connection, target: transformer, type: prerequisite_of}
+  - {source: layer_norm, target: transformer, type: prerequisite_of}
+  - {source: positional_encoding, target: transformer, type: prerequisite_of}
+
+  # --- NLP 与预训练 ---
+  - {source: transformer, target: bert, type: prerequisite_of}
+  - {source: transformer, target: gpt, type: prerequisite_of}
+  - {source: pretraining, target: bert, type: prerequisite_of}
+  - {source: pretraining, target: gpt, type: prerequisite_of}
+  - {source: pretraining, target: fine_tuning, type: prerequisite_of}
+  - {source: masked_lm, target: bert, type: prerequisite_of}
+  - {source: next_token_prediction, target: gpt, type: prerequisite_of}
+  - {source: gpt, target: llm, type: prerequisite_of}
+  - {source: transformer, target: llm, type: prerequisite_of}
+  - {source: scaling_law, target: llm, type: related_to}
+  - {source: fine_tuning, target: peft, type: prerequisite_of}
+
+  # --- 大模型工程 ---
+  - {source: llm, target: sft, type: prerequisite_of}
+  - {source: fine_tuning, target: sft, type: prerequisite_of}
+  - {source: sft, target: rlhf, type: prerequisite_of}
+  - {source: reward_model, target: rlhf, type: prerequisite_of}
+  - {source: rlhf, target: dpo, type: prerequisite_of}
+  - {source: peft, target: lora, type: prerequisite_of}
+  - {source: lora, target: qlora, type: prerequisite_of}
+  - {source: quantization, target: qlora, type: prerequisite_of}
+  - {source: lora, target: peft, type: part_of, note: LoRA 是 PEFT 的一种实现}
+  - {source: reward_model, target: rlhf, type: part_of}
+  - {source: llm, target: context_window, type: prerequisite_of}
+  - {source: llm, target: inference, type: prerequisite_of}
+  - {source: llm, target: evaluation, type: related_to}
+  - {source: inference, target: kv_cache, type: prerequisite_of}
+  - {source: context_window, target: kv_cache, type: prerequisite_of}
+  - {source: inference, target: vllm, type: implemented_by}
+  - {source: paged_attention, target: vllm, type: part_of}
+  - {source: inference, target: speculative_decoding, type: prerequisite_of}
+  - {source: inference, target: quantization, type: prerequisite_of}
+  - {source: inference, target: distillation, type: related_to}
+  - {source: neural_network, target: mixed_precision, type: prerequisite_of}
+  - {source: cnn, target: batch_norm, type: related_to, note: BatchNorm 在 CV 中广泛使用}
+
+  # --- RAG ---
+  - {source: llm, target: rag, type: prerequisite_of}
+  - {source: embedding_model, target: rag, type: prerequisite_of}
+  - {source: vector_database, target: rag, type: prerequisite_of}
+  - {source: chunking, target: rag, type: prerequisite_of}
+  - {source: embedding, target: embedding_model, type: prerequisite_of}
+  - {source: rerank, target: rag, type: prerequisite_of}
+  - {source: hybrid_search, target: rag, type: prerequisite_of}
+  - {source: rag, target: graph_rag, type: prerequisite_of}
+  - {source: graph_rag, target: rag, type: evolved_from}
+
+  # --- Agent ---
+  - {source: llm, target: agent, type: prerequisite_of}
+  - {source: prompt_engineering, target: agent, type: prerequisite_of}
+  - {source: llm, target: prompt_engineering, type: prerequisite_of}
+  - {source: agent, target: tool_use, type: prerequisite_of}
+  - {source: function_calling, target: tool_use, type: prerequisite_of}
+  - {source: tool_use, target: agent, type: part_of}
+  - {source: mcp, target: tool_use, type: related_to, note: MCP 标准化了工具对接}
+  - {source: agent, target: react, type: prerequisite_of}
+  - {source: agent, target: planning, type: prerequisite_of}
+  - {source: agent, target: memory, type: prerequisite_of}
+  - {source: react, target: multi_agent, type: prerequisite_of}
+  - {source: planning, target: multi_agent, type: prerequisite_of}
+  - {source: rag, target: memory, type: related_to, note: 长期记忆常用 RAG 实现}
+
+  # --- 提示工程 ---
+  - {source: prompt_engineering, target: cot, type: prerequisite_of}
+  - {source: prompt_engineering, target: few_shot, type: prerequisite_of}
+  - {source: cot, target: react, type: prerequisite_of}
+  - {source: few_shot, target: cot, type: prerequisite_of}
+
+  # --- 评估 ---
+  - {source: evaluation, target: llm_as_judge, type: prerequisite_of}
+  - {source: perplexity, target: evaluation, type: part_of}
+  - {source: bleu, target: evaluation, type: part_of}
+  - {source: rouge, target: evaluation, type: part_of}
+  - {source: benchmark, target: evaluation, type: part_of}
+  - {source: llm, target: benchmark, type: prerequisite_of}
+
+  # --- 论文 ---
+  - {source: transformer, target: paper_attention, type: described_in}
+  - {source: rag, target: paper_rag, type: described_in}
+  - {source: lora, target: paper_lora, type: described_in}
+  - {source: react, target: paper_react, type: described_in}
+  - {source: graph_rag, target: paper_graphrag, type: described_in}
+
+  # --- 易混淆对（驱动对比式复习）---
+  - {source: fine_tuning, target: rag, type: confusable_with, note: 都是补充知识，但一个改参数一个新注入}
+  - {source: batch_norm, target: layer_norm, type: confusable_with, note: 归一化维度不同}
+  - {source: rag, target: graph_rag, type: confusable_with, note: 检索粒度不同：块 vs 图}
+  - {source: cot, target: react, type: confusable_with, note: CoT 只推理，ReAct 还行动}
+  - {source: sft, target: rlhf, type: confusable_with, note: 模仿 vs 偏好对齐}
+  - {source: lora, target: qlora, type: confusable_with, note: QLoRA = 量化基座 + LoRA}
+  - {source: quantization, target: distillation, type: confusable_with, note: 压权重 vs 训小模型}
+  - {source: function_calling, target: tool_use, type: confusable_with, note: 机制 vs 能力}
+  - {source: self_attention, target: attention, type: confusable_with}
+  - {source: dpo, target: rlhf, type: confusable_with, note: 有/无显式奖励模型}
+  - {source: rnn, target: lstm, type: confusable_with, note: 门控缓解梯度消失}
+  - {source: few_shot, target: fine_tuning, type: confusable_with, note: 改提示 vs 改参数}

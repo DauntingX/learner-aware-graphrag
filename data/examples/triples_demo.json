@@ -1,0 +1,23 @@
+{
+  "_comment": "P1 抽取产物示例 —— 演示增量入库的输入契约。source/target 可写已有节点的 id、名称或别名；本文件可反复入库（同 key 关系去重、同 id 节点合并）。运行: python ingest.py data/inbox/triples_demo.json",
+  "source": "demo: 手写示例（正式管线里由 LLM 从笔记/论文抽取）",
+  "nodes": [
+    {"id": "rope", "name": "旋转位置编码", "type": "Technique", "domain": "大模型工程",
+     "difficulty": 4, "desc": "把相对位置信息旋进 Q/K 向量，外推性优于绝对位置编码", "aliases": ["RoPE"]},
+    {"id": "flash_attention", "name": "FlashAttention", "type": "Technique", "domain": "大模型工程",
+     "difficulty": 4, "desc": "分块计算 + 在线 softmax，IO 感知的精确注意力加速"},
+    {"id": "moe", "name": "混合专家模型", "type": "Technique", "domain": "大模型工程",
+     "difficulty": 5, "desc": "门控网络按 token 路由到稀疏专家，扩大参数量而不等比增加算力", "aliases": ["MoE"]},
+    {"id": "gqa", "name": "分组查询注意力", "type": "Technique", "domain": "大模型工程",
+     "difficulty": 4, "desc": "多个查询头共享一组 KV 头，压缩推理期 KV 缓存", "aliases": ["GQA"]}
+  ],
+  "relations": [
+    {"source": "positional_encoding", "target": "rope", "type": "prerequisite_of", "confidence": 0.9},
+    {"source": "rope", "target": "Transformer", "type": "applied_in", "confidence": 0.95},
+    {"source": "flash_attention", "target": "自注意力", "type": "applied_in", "confidence": 0.9},
+    {"source": "transformer", "target": "moe", "type": "prerequisite_of", "confidence": 0.85},
+    {"source": "moe", "target": "大语言模型", "type": "part_of", "confidence": 0.8},
+    {"source": "gqa", "target": "kv_cache", "type": "applied_in", "confidence": 0.85},
+    {"source": "attention", "target": "gqa", "type": "prerequisite_of", "confidence": 0.8}
+  ]
+}

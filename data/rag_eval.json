@@ -1,0 +1,15 @@
+{
+  "_comment": "GraphRAG 对比评测集：每条查询给出期望命中的节点（golden）。指标定义见 src/kg/rag.py compare_rag。golden 必须是图中真实存在的节点 id。",
+  "queries": [
+    {"query": "GraphRAG 是什么，和普通 RAG 比强在哪", "golden": ["graph_rag", "rag"]},
+    {"query": "RLHF 的训练流程是怎样的", "golden": ["rlhf", "reward_model", "sft"]},
+    {"query": "推理的时候 KV 缓存为什么占显存，怎么优化", "golden": ["kv_cache", "paged_attention"]},
+    {"query": "LoRA 微调的原理", "golden": ["lora", "peft"]},
+    {"query": "怎么让大模型一步步推理", "golden": ["cot", "few_shot"]},
+    {"query": "RAG 系统里文档要怎么切、怎么检索", "golden": ["rag", "chunking", "vector_database"]},
+    {"query": "模型训练时梯度消失怎么办", "golden": ["backpropagation", "residual_connection", "lstm"]},
+    {"query": "Agent 是怎么调用工具完成任务的", "golden": ["agent", "tool_use", "react"]},
+    {"query": "监督学习的基本流程是什么", "golden": ["supervised_learning", "loss_function"]},
+    {"query": "线性代数对深度学习有什么用", "golden": ["linear_algebra"]}
+  ]
+}

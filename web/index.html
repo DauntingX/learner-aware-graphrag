@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 知识图谱 · 学习者感知服务</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo"></span>
+    <div>
+      <h1>AI 知识图谱</h1>
+      <p>学习者感知 · 学习路径规划</p>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="app">
+
+  <aside class="panel">
+
+    <section class="block">
+      <h2>掌握度图例</h2>
+      <ul class="legend" id="legend"></ul>
+    </section>
+
+    <section class="block accent-block">
+      <h2>学习路径动画</h2>
+      <label class="field">
+        <span>目标知识点</span>
+        <select id="targetSelect"></select>
+      </label>
+      <button id="playBtn" class="primary">播放学习路径</button>
+      <p class="hint" id="pathHint">选一个目标，看从当前水平到它要走哪些步。</p>
+    </section>
+
+    <section class="block">
+      <h2>领域筛选</h2>
+      <div class="chips" id="domainChips"></div>
+      <div class="row-actions">
+        <button class="mini" data-domain-all="1">全选</button>
+        <button class="mini" data-domain-none="1">清空</button>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>关系类型</h2>
+      <div class="chips" id="relChips"></div>
+    </section>
+
+    <section class="block">
+      <h2>搜索</h2>
+      <input id="search" placeholder="输入概念名，回车定位">
+      <label class="switch">
+        <input type="checkbox" id="allLabels">
+        <span>显示全部节点标签</span>
+      </label>
+    </section>
+
+  </aside>
+
+  <section class="stage">
+    <svg id="graph"></svg>
+
+    <div class="detail" id="detail" hidden></div>
+
+    <div class="player" id="player" hidden>
+      <div class="player-head">
+        <span class="player-title">学习路径</span>
+        <div class="player-actions">
+          <button class="mini" id="prevBtn">上一步</button>
+          <button class="mini solid" id="autoBtn">暂停</button>
+          <button class="mini" id="nextBtn">下一步</button>
+          <button class="mini ghost" id="exitBtn">退出</button>
+        </div>
+      </div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="step-card" id="stepCard"></div>
+    </div>
+
+    <div class="tooltip" id="tooltip" hidden></div>
+  </section>
+
+</div>
+
+<!-- build_graph.py 会把合成或本地数据内联到 standalone.html -->
+<script id="kg-data" type="application/json"></script>
+
+<script src="vendor/d3.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

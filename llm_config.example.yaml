@@ -1,0 +1,30 @@
+# LLM 配置模板 —— 复制为 llm_config.yaml 后填写
+#   cp llm_config.example.yaml llm_config.yaml
+# llm_config.yaml 已被 .gitignore 忽略，密钥不会进仓库。
+#
+# 优先级：命令行参数 > 本文件 > 环境变量（LLM_BASE_URL / LLM_API_KEY / LLM_MODEL）
+# 任何 OpenAI 兼容接口都可用，常用服务商 base_url 备查：
+#   智谱 GLM      https://open.bigmodel.cn/api/paas/v4
+#   DeepSeek      https://api.deepseek.com/v1
+#   Moonshot      https://api.moonshot.cn/v1
+#   通义千问      https://dashscope.aliyuncs.com/compatible-mode/v1
+#   SiliconFlow   https://api.siliconflow.cn/v1
+#   OpenAI        https://api.openai.com/v1
+#   Ollama 本地   http://localhost:11434/v1     （api_key 留空即可）
+
+base_url: https://open.bigmodel.cn/api/paas/v4
+api_key: ${ZHIPUAI_API_KEY}     # 支持 ${环境变量} 引用；也可以直接写明文密钥
+model: glm-4-flash              # 换模型只改这一行 + base_url
+
+# ---- GraphRAG 嵌入（可缺省）----
+# 配了 embedding_model 就用 API 语义向量（检索质量更好）；
+# 留空则自动降级为本地哈希向量（确定性、离线可跑，词面级相似度）。
+embedding_model: embedding-3
+# embedding_base_url: https://api.other.com/v1   # 嵌入服务与对话模型不同源时才需要
+
+# ---- 可选参数 ----
+temperature: 0.2                # 抽取任务要稳，不建议调高
+max_tokens: 4096
+timeout: 120                    # 单次请求超时（秒）
+chunk_chars: 4000               # 语料分片大小（字符）
+max_retries: 1                  # 解析失败 / 限流时的重试次数

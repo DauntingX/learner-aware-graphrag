@@ -1,0 +1,51 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.tmp/
+
+# 构建产物
+data/kg.sqlite
+data/kg.sqlite-*
+web/graph_data.json
+web/standalone.html
+dist/
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store
+.pytest_cache/
+
+# 入库备份
+*.yaml.bak
+
+# LLM 密钥配置（从 llm_config.example.yaml 复制）
+llm_config.yaml
+.env
+.env.*
+
+# GraphRAG 向量索引（构建产物，可由 build 重建）
+data/vector_index.json*
+
+# ========= 以下内容含个人数据，发布到 GitHub 前绝不公开 =========
+
+# AI 协作工具的工作日志（含本机路径与会话历史）
+.workbuddy/
+
+# 求职材料（个人简历内容）
+RESUME.md
+ai-knowledge-graph-prompt.md
+
+# 个人学习画像及其本地备份；只公开独立编写的合成示例
+data/learner_state*.json
+!data/learner_state.example.json
+
+# 机器补丁层 / 入库产物：一旦入库真实笔记，就是个人笔记的衍生物
+data/ontology_generated.yaml
+data/inbox/
+
+# corpus 放个人笔记，只保留两个程序生成的示例
+data/corpus/*
+!data/corpus/demo_notes.md
+!data/corpus/agent_notes.docx

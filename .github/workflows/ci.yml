@@ -1,0 +1,42 @@
+name: tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run all test suites
+        env:
+          PYTHONUTF8: "1"
+        run: |
+          python tests/test_ingest.py
+          python tests/test_extract.py
+          python tests/test_notes.py
+          python tests/test_rag.py
+          python tests/test_suggest.py
+          python tests/test_learner.py
+          python tests/test_mcp.py
+      - name: Build public demo from synthetic data
+        env:
+          PYTHONUTF8: "1"
+        run: |
+          python build_graph.py --public-demo
+          python -c "import json, pathlib; p=pathlib.Path('dist/public-demo'); files={f.relative_to(p).as_posix() for f in p.rglob('*') if f.is_file()}; expected={'index.html','styles.css','app.js','vendor/d3.min.js','vendor/LICENSE-d3.txt','graph_data.json','standalone.html'}; assert files == expected, files; data=json.loads((p/'graph_data.json').read_text(encoding='utf-8')); assert data['meta']['demo'] is True; assert 'user_id' not in data['meta']; assert len(data['nodes']) == 88; assert len(data['links']) == 117; assert (p/'vendor/LICENSE-d3.txt').read_text(encoding='utf-8') in (p/'standalone.html').read_text(encoding='utf-8')"
